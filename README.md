@@ -51,25 +51,6 @@ Create an extensive report on the cryptocurrency and generate a downloadable PDF
 - Create a detailed report by integrating analyses from Market_Analysis_Agent, Technical_Analysis_Agent, and Sentiment_Analysis_Agent.
 - Provide an additional comprehensive analysis based on the integrated data.
 
-## Project Structure
-
-- `main.py`: Main script to run the agents and orchestrate their tasks.
-- `agents/`: Directory containing the implementations of all agents.
-  - `market_analysis_agent.py`: Implementation of Market_Analysis_Agent.
-  - `technical_analysis_agent.py`: Implementation of Technical_Analysis_Agent.
-  - `sentiment_analysis_agent.py`: Implementation of Sentiment_Analysis_Agent.
-  - `write_report_agent.py`: Implementation of Write_Report_Agent.
-- `tools/`: Directory containing the tools used by the agents.
-  - `extract_url.py`: Implementation of the Extract_url tool.
-  - `scrap_data.py`: Implementation of the Scrap_data tool.
-  - `take_ss.py`: Implementation of the Take_ss tool.
-  - `get_pic_content.py`: Implementation of the Get_Pic_Content tool.
-  - `search.py`: Implementation of the search tool.
-  - `find_similar.py`: Implementation of the find_similar tool.
-  - `get_contents.py`: Implementation of the get_contents tool.
-- `reports/`: Directory where generated reports will be saved.
-- `README.md`: This readme file.
-
 ## How to Run
 
 1. **Setup Environment:**
