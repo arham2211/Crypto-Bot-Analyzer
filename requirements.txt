@@ -1,0 +1,15 @@
+requests 
+langchain_community 
+crewai 
+google.generativeai 
+exa_py 
+langchain_google_genai 
+fpdf 
+langchain 
+embedchain
+playwright 
+beautifulsoup4
+selenium
+webdriver_manager
+pymupdf
+streamlit   
