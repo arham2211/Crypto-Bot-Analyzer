@@ -1,4 +1,4 @@
-# Crypto Analyzer Project
+# Crypto Bot Analyzer Project
 
 This project uses Crew AI to analyze cryptocurrency coin input by the user through three specialized agents and create a comprehensive report based on it analyses. The agents involved are Market_Analysis_Agent, Technical_Analysis_Agent, Sentiment_Analysis_Agent, and Write_Report_Agent. Each agent is tasked with specific functions and uses designated tools to fulfill their roles.
 
