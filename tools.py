@@ -115,7 +115,8 @@ class CryptoTradingTools():
   @tool("Extract the content from the image")
   def Get_Pic_Content():
     "Extract the content from the image"
-    genai.configure(api_key="AIzaSyAflO1ApOXZCQsmJo4YSN8ZMhyyas11oEQ")
+
+    genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
     model = genai.GenerativeModel('gemini-pro-vision')
 
