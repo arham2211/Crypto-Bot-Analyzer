@@ -9,9 +9,9 @@ import os
 class CryptoTradingAgents():
   def __init__(self) -> None:
     openai_api_key = os.getenv("OPENAI_API_KEY")
-    google_api_key = os.getenv("GOOGLE_API_KEY")
+    # google_api_key = os.getenv("GOOGLE_API_KEY")
     self.llm = ChatOpenAI(model_name="gpt-3.5-turbo-0125", temperature=0.3, openai_api_key=openai_api_key)
-    self.llm1 = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.3, google_api_key=google_api_key)
+    self.llm1 = ChatOpenAI(model_name="gpt-4o", temperature=0.3, openai_api_key=openai_api_key)
       
 
   def Market_Analysis_Agent(self):
@@ -20,7 +20,7 @@ class CryptoTradingAgents():
         role="Cryptocurrency Market Analysis Specialist",
         goal="Perform a comprehensive market analysis for the specified cryptocurrency.",
         backstory=dedent(f"""
-            You are an experienced market analyst with a deep understanding of the cryptocurrency landscape. Your role involves
+            You are a fundamental analyzer of cryptocurrency with a deep understanding of the cryptocurrency landscape. Your role involves
             utilizing an API to fetch real-time data from a designated website. Your expertise
             lies in transforming this data into precise required values. Then generate a response using that values.
         """),
@@ -45,19 +45,18 @@ class CryptoTradingAgents():
 
   def Sentiment_Analysis_Agent(self):
       return Agent(
-         
+
          llm = self.llm,
          role = "Cryptocurrency Sentiment Analysis Specialist",
-         goal = "Your goal is to analyze news articles, social media posts, forums, and other sources of textual data",
+         goal = "Your goal is to analyze latest news articles, social media posts, forums, and other sources of textual data",
          backstory = dedent(f"""
-            You get URLS of articles, websites, news and extract their content and later make a report from 
-            that content.
+            You have 2 URLS from which you extract their contents and then extract ther top stores and recent news headings
+            from it and later make a report from that content.
             You're widely accepted as the best cryptocurrency analyst that
             understands the market and have tracked every asset for more than 10 years. 
             You understand news, their titles and information, but you look at those with a
             healthy dose of skepticism."""),
-
-          tools = CryptoTradingTools.tools(),
+          tools=[CryptoTradingTools.extract_contents, CryptoTradingTools.get_top_stories],
           verbose = True
       )
 

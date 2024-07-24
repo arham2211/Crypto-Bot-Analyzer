@@ -9,11 +9,11 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium import webdriver
-import google.generativeai as genai
 from urllib.parse import urlparse
 from langchain.agents import tool
 from exa_py import Exa
-import mimetypes
+from openai import OpenAI
+import base64
 import time
 import os
 
@@ -107,7 +107,7 @@ class CryptoTradingTools():
           # Wait for the chart to update
           time.sleep(5)  # Adjust this based on how long it takes for the chart to update
 
-          driver.save_screenshot("coin_screenshot.png")
+          driver.save_screenshot("coin_screenshot.jpeg")
           print("Screenshot taken successfully.")
         finally:
           driver.quit()
@@ -115,108 +115,118 @@ class CryptoTradingTools():
   @tool("Extract the content from the image")
   def Get_Pic_Content():
     "Extract the content from the image"
+    image_path = "coin_screenshot.jpeg"  
+    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-    genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
-    model = genai.GenerativeModel('gemini-pro-vision')
-
-    image_path = "coin_screenshot.png"  
-
-    try:
-        with open(image_path, "rb") as image_file:
-            bytes_data = image_file.read()
-    except FileNotFoundError:
-        return "Image file not found."
-    except Exception as e:
-        return f"An error occurred while reading the image file: {e}"
-
-    mime_type, _ = mimetypes.guess_type(image_path)
-    if not mime_type:
-        return "Unable to determine the MIME type of the image."
-
-    image_parts = [
-        {
-            "mime_type": mime_type,
-            "data": bytes_data
-        }
-    ]
-
-    input_prompt = """        
-            Perform a comprehensive technical analysis of the provided candlestick chart to identify key market trends, patterns, and potential trading signals.
-
-            1. Trend Analysis:
-                - Identify the current trend (uptrend, downtrend, or sideways).
-                - Determine trend strength and potential reversal points.
-            
-            2. Support and Resistance Levels:
-                - Identify major support and resistance levels.
-                - Highlight any significant breakouts or breakdowns.
-            
-            3. Candlestick Patterns:
-                - Detect and interpret common candlestick patterns (e.g., Doji, Hammer, Engulfing patterns, etc).
-                - Provide insights on potential bullish or bearish signals based on these patterns.
-            
-            4. Moving Averages:
-                - Calculate and analyze moving averages (e.g., 50-day, 200-day).
-                - Identify any crossovers (e.g., Golden Cross, Death Cross) and their implications.
-            
-            5. Volume Analysis:
-                - Analyze volume trends to confirm price movements.
-                - Highlight any unusual volume spikes and their potential impact.
-
-            6. Risk Assessment:
-                - Assess potential risks and provide suggestions for risk management (e.g., stop-loss levels).
-
-            7. Summary and Recommendations:
-                - Summarize key findings from the analysis.
-                - Provide actionable trading recommendations based on the analysis.
-
-            Print all these outputs line by line with headings."""
-
-    try:
-        response = model.generate_content([input_prompt, image_parts[0]])
-    except Exception as e:
-        return f"An error occurred while generating content: {e}"
-
-    return response.text
-
-  @tool
-  def search(query: str):
-    """Search for a webpage based on the query."""
-    return CryptoTradingTools._exa().search(f"{query}", use_autoprompt=True, num_results=2)
-  
-  @tool
-  def find_similar(url: str):
-      """Search for webpages or articles similar to a given URL.
-      The url passed in should be a URL returned from `search`.
-      """
-      return CryptoTradingTools._exa().find_similar(url, num_results=2)
-
-  @tool
-  def get_contents(urls: str):
-      """Get the contents of a webpage.
-      """
-      content = []
-      for url in urls:
-        loader = WebBaseLoader(url)
-        data = loader.load()
-        content.append(data)
-      
-      return content
-         
-    #   ids = eval(ids)
-
-    #   contents = str(CryptoTradingTools._exa().get_contents(ids))
-    #   contents = contents.split("URL:")
-    #   contents = [content[:1000] for content in contents]
-    #   return "\n\n".join(contents)
+    with open(image_path, 'rb') as image_file:
+      image_base64 = base64.b64encode(image_file.read()).decode('utf-8')
     
-  def tools():
-    return [
-      CryptoTradingTools.search,
-      CryptoTradingTools.find_similar,
-      CryptoTradingTools.get_contents
-    ]
+
+    response = client.chat.completions.create(
+    model='gpt-4o',
+    response_format={"type": "text"},
+    messages=[
+        {
+            "role": "user",
+            "content": [
+                {"type": "text", "text":
+                  """
+                  To perform a comprehensive technical analysis of a provided candlestick chart and to generate the required outputs, you would typically use specialized software or tools like TradingView, MetaTrader, or similar platforms. Since I don't have access to view or analyze specific images directly, I will provide a detailed framework for how you can conduct this analysis:
+
+### 1. Trend Analysis
+**Current Trend**:
+- Identify whether the market is in an uptrend, downtrend, or moving sideways. This can be done by observing the direction of the price movement over time.
+- **Uptrend**: Higher highs and higher lows.
+- **Downtrend**: Lower highs and lower lows.
+- **Sideways**: Horizontal movement with no clear direction.
+
+**Trend Strength and Potential Reversal Points**:
+- Use trend strength indicators like the Average Directional Index (ADX). A high ADX indicates a strong trend.
+- Look for patterns like Head and Shoulders, Double Tops/Bottoms to identify potential reversal points.
+
+### 2. Support and Resistance Levels
+**Major Support and Resistance Levels**:
+- Identify key price levels where the market has repeatedly bounced off (support) or reversed from (resistance).
+
+**Significant Breakouts or Breakdowns**:
+- Highlight any recent price movements that have broken through established support or resistance levels, which may indicate strong future price movement.
+
+### 3. Candlestick Patterns
+**Common Candlestick Patterns**:
+- **Doji**: Indicates indecision in the market, potential reversal signal.
+- **Hammer**: Bullish reversal pattern after a downtrend.
+- **Engulfing Patterns**: Bullish or bearish, indicating strong reversal potential.
+
+**Insights on Potential Bullish or Bearish Signals**:
+- Bullish patterns suggest potential buying opportunities.
+- Bearish patterns suggest potential selling opportunities.
+
+### 4. Moving Averages
+**Calculate and Analyze Moving Averages**:
+- **50-Day Moving Average (SMA)**
+- **200-Day Moving Average (SMA)**
+
+**Identify Any Crossovers**:
+- **Golden Cross**: Short-term MA crosses above long-term MA, indicating potential bullish trend.
+- **Death Cross**: Short-term MA crosses below long-term MA, indicating potential bearish trend.
+
+### 5. Volume Analysis
+**Analyze Volume Trends**:
+- Confirm price movements with corresponding volume. An increase in volume confirms the strength of the price movement.
+
+**Unusual Volume Spikes**:
+- Identify significant volume spikes which can indicate strong buying/selling pressure and potential trend changes.
+
+### 6. Risk Assessment
+**Potential Risks and Suggestions for Risk Management**:
+- Identify levels for stop-loss orders to manage downside risk.
+- Suggest appropriate position sizing based on volatility and risk tolerance.
+
+
+### 7. Summary and Recommendations
+**Key Findings**:
+- Summarize the identified trend, key support and resistance levels, significant candlestick patterns, and volume analysis.
+
+**Actionable Trading Recommendations**:
+- Provide specific recommendations based on the analysis, such as:
+  - Buy or sell signals based on trend and pattern analysis.
+  - Suggested entry and exit points.
+  - Risk management strategies like stop-loss levels.
+
+By following this framework, you can systematically analyze a candlestick chart and derive actionable insights for trading decisions.
+                  """
+                    },
+                {
+                    "type": "image_url",
+                    "image_url": {
+                        "url": f"data:image/jpeg;base64,{image_base64}"
+                    }
+                }
+            ]
+        }
+    ],
+    max_tokens=800,
+)
+
+
+    return response.choices[0].message.content
+
+  @tool("Extract the content from the URLS using coin_name")
+  def extract_contents(coin_name: str):
+    """From the given URLs, extract the contents"""
+    loader1 = WebBaseLoader(f"https://crypto.news/tag/{coin_name}/")
+    data1 = loader1.load()
+    loader2 = WebBaseLoader(f"https://decrypt.co/crypto-news/{coin_name}")
+    data2 = loader2.load()
+    return data1[0].page_content + data2[0].page_content
+
+  @tool("Fetch top stories")
+  def get_top_stories(content: str):
+      """Find the top stories and recent news from the content and return a blog of it"""
+      new_content = content
+
+      return new_content
 
 
   def _exa():

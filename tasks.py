@@ -13,15 +13,16 @@ class CryptoTradingTasks():
                 3. Circulating Supply
                 4. 24-Hour Trading Volume
                 5. Total Supply
-                6. Initial Token Price
-                7. Fully Diluted Valuation
-                8. 24-Hour High and Low Prices
-                9. All-Time High and Low Prices
+                6. Fully Diluted Valuation
+                7. 24-Hour High and Low Prices
+                8. All-Time High and Low Prices
                 Print these values after extracting them. Ensure accuracy; the values will be provided in the website's content.
                 Coin: {coin}
             """),
             expected_output=dedent(f"""
-               Make a report using these values and if something important is also extracted then include it too in the report.
+               Make a report using these values.
+               Also tell about if the asset is undervalued or overvalued:
+    
                                    
 
             """),
@@ -86,21 +87,28 @@ class CryptoTradingTasks():
   def Get_News(self, agent, coin):
        return Task(
         description=dedent(f"""
-        Using the provided coin ({coin}), utilize the search tool to find recent websites(blogs) and news related to it. 
-        Then Extract the relevant content from these sources.
-        Using the list of urls of trending websites provided, your task is to extract relevant content related to the topic '{coin}'.
-        Focus on extracting comprehensive and relevant information that can be used to create a comprehensive and helpful report.
+        Using the provided coin ({coin}), extract the contents of the website using the urls already provided.
+        your task is to extract relevant content related to the topic '{coin}'.
+        After extracting format the content where it contains the top stories and the latest news that happened.
         Ensure that the extracted content is organized, cleaned, and formatted appropriately for further processing.
 
-        Compose the extracted content into a comprehensive and helpful report.
         """),
+        expected_output = dedent("""
+          First mention the list of top stories of the coin plus the latest stories too.
+          - Top Stories
+          - Latest Stories
+                                 
+          Then generate the report of the following sections:
 
-        expected_output=dedent(f"""
-            The expected output is a well-researched and engaging report from the extracted content of the websites.
-        """),
+          1. Summary of Content: Provide a summary of the key points from the extracted content.
 
+          2. Sentiment Analysis: Evaluate the overall sentiment of the news articles. Indicate whether the sentiment is neutral, negative, or positive.
+
+          3. Key Insights: Highlight any significant trends, insights, or notable information from the content.
+
+          Make sure your report is clear, concise, and organized. Provide specific examples or quotes from the content to support your analysis.
+      """),
         agent=agent
-
     )
 
 
@@ -110,19 +118,21 @@ class CryptoTradingTasks():
          description = dedent(f"""
             Use the previous context to create a detailed report. You should tell the user how to approach to buy
             that coin based on the analysis you have done from the content The report should include:
-                1. Market Analysis
-                2. Chart Analysis
-                3. Sentiment Analysis
-                These three will be copied from the previous context and the next analysis you will provide will be the examination of these three:
-                4. Your Analysis
+                1. Market Analysis (summary)
+                2. Chart Analysis (summary)
+                3. Sentiment Analysis (summary)
+                These three will be copied from the previous context and the next analysis you will provide will be your overview
+                on whether to buy this coin or sell it and give the reason behind your answer. Answer from the context of the previous analyses.
+                Give a detailed analysis so that the user can feel confident what to decision to take.
+                4. AI Analysis
             """),
         
         expected_output=dedent(f"""
             The expected output is a comprehensive report of atleast 4 pages that includes the following sections:
-                1. Market Analysis
-                2. Chart Analysis
-                3. Sentiment Analysis
-                4. Your Analysis
+                1. Market Analysis (summary)
+                2. Chart Analysis (summary)
+                3. Sentiment Analysis (summary)
+                4. Your Analysis (detailed)
             """),
         
         agent=agent,

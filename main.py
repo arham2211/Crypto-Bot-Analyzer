@@ -61,7 +61,6 @@ def main():
         st.subheader("Sentiment Analysis Results")
         st.write(result3)
 
-
         crew4 = Crew(
             
             agents=[Report_Agent],
@@ -101,10 +100,10 @@ def save_to_pdf(result1, result2, result3, result4):
     pdf.add_page()
     pdf.multi_cell(0, 10, "Final Report:\n" + str(result4))
 
-    pdf_file = "analysis_results.pdf"
-    pdf.output(pdf_file)
-    return pdf_file
+    filename = "analysis_report.pdf"
+    pdf.output(filename)
 
+    return filename
 
 
 if __name__ == "__main__":
