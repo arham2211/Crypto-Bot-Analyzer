@@ -79,14 +79,18 @@ def main():
         st.success(f"Results saved to {pdf_file}")
 
         # Add download button
+        with open(pdf_file, "rb") as f:
+            pdf_data = f.read()
+
         st.download_button(
             label="Download PDF",
-            data=open(pdf_file, "rb").read(),
+            data=pdf_data,
             file_name=pdf_file,
             mime="application/pdf",
         )
 
 def save_to_pdf(result1, result2, result3, result4):
+    
     pdf = FPDF()
     pdf.add_page()
     pdf.set_auto_page_break(auto=True, margin=15)
@@ -101,7 +105,7 @@ def save_to_pdf(result1, result2, result3, result4):
     pdf.multi_cell(0, 10, "Final Report:\n" + str(result4))
 
     filename = "analysis_report.pdf"
-    pdf.output(filename)
+    pdf.output(filename, 'F')
 
     return filename
 

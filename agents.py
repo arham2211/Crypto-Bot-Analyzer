@@ -1,15 +1,16 @@
-from langchain_google_genai import ChatGoogleGenerativeAI
 from textwrap import dedent
 from crewai import Agent
 from tools import CryptoTradingTools
 from langchain_openai import ChatOpenAI
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 class CryptoTradingAgents():
   def __init__(self) -> None:
     openai_api_key = os.getenv("OPENAI_API_KEY")
-    # google_api_key = os.getenv("GOOGLE_API_KEY")
     self.llm = ChatOpenAI(model_name="gpt-3.5-turbo-0125", temperature=0.3, openai_api_key=openai_api_key)
     self.llm1 = ChatOpenAI(model_name="gpt-4o", temperature=0.3, openai_api_key=openai_api_key)
       

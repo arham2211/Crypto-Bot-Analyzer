@@ -212,14 +212,25 @@ By following this framework, you can systematically analyze a candlestick chart 
 
     return response.choices[0].message.content
 
-  @tool("Extract the content from the URLS using coin_name")
+  @tool("Extract the content from the URLs using coin_name")
   def extract_contents(coin_name: str):
     """From the given URLs, extract the contents"""
-    loader1 = WebBaseLoader(f"https://crypto.news/tag/{coin_name}/")
-    data1 = loader1.load()
-    loader2 = WebBaseLoader(f"https://decrypt.co/crypto-news/{coin_name}")
-    data2 = loader2.load()
-    return data1[0].page_content + data2[0].page_content
+    # Ensure coin_name is a string
+    coin_name = str(coin_name)
+
+    try:
+        loader1 = WebBaseLoader(f"https://crypto.news/tag/{coin_name}/")
+        data1 = loader1.load()
+        loader2 = WebBaseLoader(f"https://decrypt.co/crypto-news/{coin_name}")
+        data2 = loader2.load()
+
+        content1 = data1[0].page_content if data1 else "No content found at the first URL."
+        content2 = data2[0].page_content if data2 else "No content found at the second URL."
+
+        return content1 + content2
+    except Exception as e:
+        return f"An error occurred while extracting content: {str(e)}"
+
 
   @tool("Fetch top stories")
   def get_top_stories(content: str):
