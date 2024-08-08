@@ -217,21 +217,16 @@ class CryptoTradingTasks():
             The agent will follow these steps:
             1. Create a closing analysis chart for the given cryptocurrency using an API.
             2. Analyze the generated line chart and summarize the findings in DICT format.
-            3. Using the points from the points.txt file, generate a new closing analysis chart 
+            3. Using the points from the DICT summary, generate a new closing analysis chart 
                with these points plotted on it.
-            4. Ensure the final output includes the updated line chart.
+            4. Ensure the final output includes both the updated line chart and a detailed 
+               report of the points in dict format
                            
             {coin}
         """),
         expected_output=dedent("""
             The output should include:
-            support_price:
-            consolidation_points_price:
-            major_resistance_price:
-            psychological_break_price:
-            immediate_resistance:   
-                                        
-            A newly created line chart with points from the values provided from points.txt plotted on it.
+            1. A detailed JSON report summarizing the analysis of the initial closing chart.
         """),
         agent=agent
     )

@@ -306,6 +306,13 @@ class CryptoTradingTools():
                     - Identify levels for stop-loss orders to manage downside risk.
                     - Suggest appropriate position sizing based on volatility and risk tolerance.
 
+                    Explain these words too given below
+                    - support_price:
+                    - consolidation_points_price:
+                    - major_resistance_price:
+                    - psychological_break_price:
+                    - immediate_resistance:   
+
 
                     ### 7. Summary and Recommendations
                     **Key Findings**:
@@ -452,6 +459,7 @@ class CryptoTradingTools():
     plt.tight_layout()
     plt.savefig('gauge.jpeg', dpi=300, bbox_inches='tight')  # Save with high resolution and tight bounding box
     plt.close(fig)  # Close the figure to free up memory
+    return "gauge has been created"
 
     
   @tool("make a line chart and save it")
@@ -525,13 +533,13 @@ class CryptoTradingTools():
                   Analyze the line chart of the specified cryptocurrency. The analysis should focus on identifying key price points. The output should be provided in DICT format, 
                   following the structure below:
                   Ouput should be in this format:
-                  {
+                  
                       "support_price": <value>,
                       "consolidation_points_price": <value>,
                       "major_resistance_price": <value>,
                       "psychological_break_price": <value>,
                       "immediate_resistance": <value>
-                  }
+                  
               
 
         Replace `<value>` with the respective price points identified from the analysis. Ensure that each key is clearly defined and corresponds to the correct price point on the chart.
@@ -556,7 +564,6 @@ class CryptoTradingTools():
      return response.choices[0].message.content
 
   
-
   @tool("Create a new line chart by the values given and save it")
   def generate_new_line_chart(coin_name: str):
     """Create a new line chart by the values and save it"""

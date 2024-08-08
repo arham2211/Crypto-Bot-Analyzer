@@ -100,7 +100,6 @@ def main():
         
         result3 = crew3.kickoff()
         st.subheader("Gauge Results")
-        st.write(result3)
         crop_image(1)
         image = Image.open("gauge_1.jpeg")
         st.image(image, caption='Gaugemeter for Technical Analysis', use_column_width=True)
@@ -194,7 +193,7 @@ def main():
 
 
         # Save results to PDF
-        pdf_file = save_to_pdf(result1, result2, result3, result4, result5, result6, result7, result8, result9)
+        pdf_file = save_to_pdf(result1, result2, result4, result5, result6, result7, result8, result9)
         st.success(f"Results saved to {pdf_file}")
 
         # Add download button
@@ -208,81 +207,53 @@ def main():
             mime="application/pdf",
         )
 
-def save_to_pdf(result1, result2, result3, result4, result5, result6, result7, result8, result9):
-
+def save_to_pdf(result1, result2, result4, result5, result6, result7, result8, result9):
     pdf = FPDF()
     pdf.add_page()
     pdf.set_auto_page_break(auto=True, margin=15)
     pdf.add_font("DejaVu", "", "DejaVuSansCondensed.ttf", uni=True)
-    pdf.add_font("DejaVu", "B", "DejaVuSansCondensed-Bold.ttf", uni=True)
+    pdf.set_font("DejaVu", size=12)
 
-    def write_unicode(text, size=12, style=""):
-        pdf.set_font("DejaVu", style=style, size=size)
-        lines = text.split('\n')
-        for line in lines:
-            if line.startswith('####'):
-                pdf.set_font("DejaVu", style="B", size=14)
-                pdf.multi_cell(0, 10, line[5:].strip())
-            elif '**' in line:
-                parts = line.split('**')
-                for i, part in enumerate(parts):
-                    if i % 2 == 0:
-                        pdf.set_font("DejaVu", style="", size=size)
-                    else:
-                        pdf.set_font("DejaVu", style="B", size=size)
-                    pdf.write(5, part)
-                pdf.ln()
-            else:
-                pdf.multi_cell(0, 5, line)
-        pdf.ln(5)
+    def write_unicode(text):
+        pdf.multi_cell(0, 10, text.encode('latin-1', 'replace').decode('latin-1'))
 
-    write_unicode("Market Analysis Results:", size=16, style="B")
-    write_unicode(str(result1))
+    write_unicode("Market Analysis Results:\n" + str(result1))
     pdf.add_page()
 
-    write_unicode("Technical Analysis Results:", size=16, style="B")
-    write_unicode(str(result2))
+    write_unicode("Technical Analysis Results:\n" + str(result2))
     pdf.add_page()
     pdf.image("coin_screenshot.jpeg", x=10, y=pdf.get_y(), w=190)
     pdf.add_page()
 
-    write_unicode("Gauge Results (Technical Analysis):", size=16, style="B")
+    write_unicode("Gauge Results (Technical Analysis):\n")
     pdf.image("gauge_1.jpeg", x=10, y=pdf.get_y(), w=190)
     pdf.add_page()
 
-    write_unicode("Moving Average Analysis Results:", size=16, style="B")
-    write_unicode(str(result4))
+    write_unicode("Moving Average Analysis Results:\n" + str(result4))
     pdf.add_page()
     pdf.image("sma.jpeg", x=10, y=pdf.get_y(), w=190)
     pdf.add_page()
 
-    write_unicode("Gauge Results (Moving Average):", size=16, style="B")
-    write_unicode(str(result5))
+    write_unicode("Gauge Results (Moving Average):\n" + str(result5))
     pdf.image("gauge_2.jpeg", x=10, y=pdf.get_y(), w=190)
     pdf.add_page()
 
-    write_unicode("Closing Chart Results:", size=16, style="B")
-    write_unicode(str(result6))
+    write_unicode("Closing Chart Results:\n" + str(result6))
     pdf.add_page()
     pdf.image("line_chart.jpeg", x=10, y=pdf.get_y(), w=190)
     pdf.add_page()
 
-    write_unicode("Sentiment Analysis Results:", size=16, style="B")
-    write_unicode(str(result7))
+    write_unicode("Sentiment Analysis Results:\n" + str(result7))
     pdf.add_page()
 
-    write_unicode("Final Report:", size=16, style="B")
-    write_unicode(str(result8))
+    write_unicode("Final Report:\n" + str(result8))
     pdf.add_page()
-
-    write_unicode("Gauge Results (Summary):", size=16, style="B")
-    write_unicode(str(result9))
+    write_unicode("Gauge Results (Summary):\n" + str(result9))
     pdf.image("gauge_3.jpeg", x=10, y=pdf.get_y(), w=190)
 
     filename = "analysis_report.pdf"
     pdf.output(filename)
     return filename
-
 
 if __name__ == "__main__":
     main()

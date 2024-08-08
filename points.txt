@@ -1,0 +1,7 @@
+{
+    "support_price": 56000,
+    "consolidation_points_price": 64000,
+    "major_resistance_price": 68000,
+    "psychological_break_price": 60000,
+    "immediate_resistance": 62000
+}

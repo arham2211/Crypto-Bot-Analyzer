@@ -129,7 +129,7 @@ class CryptoTradingAgents():
             Buy, or Strong Buy. Then, create a gauge chart based on the response.
         """),
         tools = [CryptoTradingTools.generate_gauge],
-        verbose = True
+        verbose =True
     )
   
   def Closing_Price_Analysis_Agent(self):
