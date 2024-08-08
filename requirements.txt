@@ -13,3 +13,5 @@ selenium
 webdriver_manager
 pymupdf
 streamlit
+mplfinance
+plotly

@@ -33,8 +33,8 @@ class CryptoTradingTasks():
   def Perform_Chart_Analysis(self, agent, coin):
       return Task(
           description= dedent(f"""
-              Your role involves extracting a symbol and then take a screenshot of the candlestick chart 
-              from a given website using a tool. You analyze candlestick charts to understand market sentiment 
+              Your role involves extracting a symbol and then create candlestick chart with volume
+              sing a tool. You analyze candlestick charts to understand market sentiment 
               and price movements. By interpreting the patterns formed by candlesticks, they can make informed predictions 
               about future price directions. You assess the overall trend of the market (uptrend, downtrend,
               or sideways) by analyzing the candlestick patterns over various time frames. You can also detect 
@@ -56,10 +56,7 @@ class CryptoTradingTasks():
             3. Candlestick Patterns:
                 - Detect and interpret common candlestick patterns (e.g., Doji, Hammer, Engulfing patterns, Harami etc).
                 - Provide insights on potential bullish or bearish signals based on these patterns.
-            
-            4. Moving Averages:
-                - Calculate and analyze moving averages (e.g., 50-day, 200-day).
-                - Identify any crossovers (e.g., Golden Cross, Death Cross) and their implications.
+        
             
             5. Volume Analysis:
                 - Analyze volume trends to confirm price movements.
@@ -82,21 +79,50 @@ class CryptoTradingTasks():
           """),
           agent = agent
         )
+  
+
+  def Moving_Average_Analysis(self, agent, coin):
+    return Task(
+        description=dedent(f"""
+            Analyze the moving average chart for the specified cryptocurrency, {coin}. 
+            The task involves evaluating the simple moving average (SMA) data presented in the chart screenshot for {coin}. 
+
+            Your analysis should include:
+            - Identifying key trends and patterns in the SMA data.
+            - Noting any significant crossovers, trend reversals, or anomalies.
+            - Providing a summary of the current market position based on the SMA.
+            - Making actionable recommendations based on the observed SMA trends.
+
+            Use your expertise to deliver a comprehensive assessment of the cryptocurrency's performance as indicated by the moving average data.
+
+        """),
+        expected_output=dedent(f"""
+            The expected output is a detailed analysis report of the simple moving average for {coin}. 
+            The report should include:
+            - A summary of key trends and patterns identified in the SMA data.
+            - Observations of any significant crossovers or anomalies.
+            - An assessment of the cryptocurrency's market position based on the SMA.
+            - Actionable recommendations for trading or investment based on the SMA analysis.
+
+            The report should be clear, concise, and tailored to assist in strategic decision-making regarding the cryptocurrency.
+        """),
+        agent=agent
+    )
 
 
   def Get_News(self, agent, coin):
        return Task(
         description=dedent(f"""
-        Using the provided coin ({coin}), extract the contents of the website using the urls already provided.
-        your task is to extract relevant content related to the topic '{coin}'.
-        After extracting format the content where it contains the top stories and the latest news that happened.
+        Using the provided coin ({coin}), extract the news using the api already provided.
+        your task is to extract title and text content related to the topic '{coin}'.
+        After extracting format the content format them in a concise manner with the title and text format.
         Ensure that the extracted content is organized, cleaned, and formatted appropriately for further processing.
 
         """),
         expected_output = dedent("""
           First mention the list of top stories of the coin plus the latest stories too.
-          - Top Stories
-          - Latest Stories
+          - Title:
+          - Text:
                                  
           Then generate the report of the following sections:
 
@@ -135,7 +161,77 @@ class CryptoTradingTasks():
                 4. Your Analysis (detailed)
             """),
         
-        agent=agent,
+        agent=agent
 
       )
   
+
+  def Create_Gauge1(self, agent):
+    return Task(
+        description=dedent("""
+                Use the context of technical analysis to recommend an approach to the user.
+                The possible approaches are Strong Buy, Buy, Neutral, Sell, and Strong Sell.
+                Convert this recommendation into a dictionary and pass it to a tool that creates
+                a gauge chart.
+            """),
+        expected_output=dedent("""
+            The expected output is a gauge chart that has been created.
+            """),
+            agent=agent
+    )
+  
+
+  def Create_Gauge2(self, agent):
+    return Task(
+        description=dedent("""
+                Use the context of simple moving average analysis to recommend an approach to the user.
+                The possible approaches are Strong Buy, Buy, Neutral, Sell, and Strong Sell.
+                Convert this recommendation into a dictionary and pass it to a tool that creates
+                a gauge chart.
+            """),
+        expected_output=dedent("""
+            The expected output is a gauge chart that has been created.
+            """),
+            agent=agent
+    )
+  
+  def Create_Gauge3(self, agent):
+    return Task(
+        description=dedent("""
+                Use the context of write report to recommend an approach to the user.
+                The possible approaches are Strong Buy, Buy, Neutral, Sell, and Strong Sell.
+                Convert this recommendation into a dictionary and pass it to a tool that creates
+                a gauge chart.
+            """),
+        expected_output=dedent("""
+            The expected output is a gauge chart that has been created.
+            """),
+            agent=agent
+    )
+  
+
+  def Closing_Price_Analysis(self, agent, coin):
+    return Task(
+        description=dedent(f"""
+            The task involves analyzing closing prices for a specified cryptocurrency. 
+            The agent will follow these steps:
+            1. Create a closing analysis chart for the given cryptocurrency using an API.
+            2. Analyze the generated line chart and summarize the findings in DICT format.
+            3. Using the points from the points.txt file, generate a new closing analysis chart 
+               with these points plotted on it.
+            4. Ensure the final output includes the updated line chart.
+                           
+            {coin}
+        """),
+        expected_output=dedent("""
+            The output should include:
+            support_price:
+            consolidation_points_price:
+            major_resistance_price:
+            psychological_break_price:
+            immediate_resistance:   
+                                        
+            A newly created line chart with points from the values provided from points.txt plotted on it.
+        """),
+        agent=agent
+    )
